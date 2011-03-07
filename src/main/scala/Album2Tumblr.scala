@@ -111,32 +111,32 @@ object Album2Tumblr {
   }
 
   def getFileDate(file: File) = file.name.startsWith("day") match {
-      case true =>
-        // add num of days extracted from file name to 2005/05/02.
-        // e.g., day02_birth1.jpg => 2005/05/02 + 2days = 2005/05/04
-        val cal = Calendar.getInstance
-        cal.clear
-        cal.set(Calendar.YEAR, 2005)
-        cal.set(Calendar.MONTH, Calendar.MAY)
-        cal.set(Calendar.DAY_OF_MONTH, 2)
-        cal.add(Calendar.DAY_OF_MONTH, file.name.split("_")(0).substring(3).toInt)
-        cal.getTime
-      case false =>
-        // set date extracted from the name of the file or directory
-        val datePattern = """(\d{4})""".r
-        val year = file.parent.parent.name
-        val firstWord = file.name.split("_")(0)
-        firstWord match {
-          case datePattern(firstWord) =>
-            val sdf = new SimpleDateFormat("yyyyMMdd")
-            sdf.parse("%s%s".format(year, firstWord))
-          case _ =>
-            val month = file.parent.name
-            val sdf = new SimpleDateFormat("yyyyMM")
-            month.length match {
-              case 2 => sdf.parse("%s%s".format(year, month))
-              case 6 => sdf.parse(month)
-            }
-        }
+    case true =>
+      // add num of days extracted from file name to 2005/05/02.
+      // e.g., day02_birth1.jpg => 2005/05/02 + 2days = 2005/05/04
+      val cal = Calendar.getInstance
+      cal.clear
+      cal.set(Calendar.YEAR, 2005)
+      cal.set(Calendar.MONTH, Calendar.MAY)
+      cal.set(Calendar.DAY_OF_MONTH, 2)
+      cal.add(Calendar.DAY_OF_MONTH, file.name.split("_")(0).substring(3).toInt)
+      cal.getTime
+    case false =>
+      // set date extracted from the name of the file or directory
+      val datePattern = """(\d{4})""".r
+      val year = file.parent.parent.name
+      val firstWord = file.name.split("_")(0)
+      firstWord match {
+        case datePattern(firstWord) =>
+          val sdf = new SimpleDateFormat("yyyyMMdd")
+          sdf.parse("%s%s".format(year, firstWord))
+        case _ =>
+          val month = file.parent.name
+          val sdf = new SimpleDateFormat("yyyyMM")
+          month.length match {
+            case 2 => sdf.parse("%s%s".format(year, month))
+            case 6 => sdf.parse(month)
+          }
+      }
   }
 }
