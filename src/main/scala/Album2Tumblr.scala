@@ -85,7 +85,9 @@ object Album2Tumblr {
         "Success! The new post ID is %s".format(
           Source.fromInputStream(c).mkString)
       case 403 => "Bad email or password"
-      case _ => "Error: %s".format(statusLine)
+      case _ =>
+        val c = new BufferedHttpEntity(httpResponse.getEntity).getContent
+        "Error: %s".format(Source.fromInputStream(c).mkString)
     }
     println(result)
   }
