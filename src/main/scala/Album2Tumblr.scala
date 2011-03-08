@@ -21,6 +21,9 @@ import com.drew.imaging._
 
 object Album2Tumblr {
 
+  val limit = 75 // tumblr API daily photo upload limit
+  var count = 0  // number of photos uploaded
+
   def main(args: Array[String]) {
     require(args.length == 3)
     val name = args(0)     // tumblr name
@@ -74,7 +77,13 @@ object Album2Tumblr {
 
     httpPost.setEntity(entity)
 
-    Thread.sleep(1000) // avoid exceeding tumblr rate limit
+    // wait for 24 hours if daily upload limit is reached
+    count % limit match {
+      case 0 => if (count > 0) Thread.sleep(1000 * 60 * 60 * 24)
+      case _ => Thread.sleep(1000) // avoid exceeding tumblr rate limit
+    }
+    count += 1
+    println("Uploading photo NO. %d".format(count))
 
     val httpResponse = httpClient.execute(httpPost)
     val statusLine = httpResponse.getStatusLine
@@ -108,7 +117,7 @@ object Album2Tumblr {
     val exifDirectory = meta.getDirectory(classOf[ExifDirectory])
     exifDirectory.containsTag(ExifDirectory.TAG_DATETIME) match {
       case true => Some(exifDirectory.getDate(ExifDirectory.TAG_DATETIME))
-      case _ => None
+      case false => None
     }
   }
 
