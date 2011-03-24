@@ -1,11 +1,8 @@
-import collection.JavaConversions._
 import io.Source
-import xml.{NodeSeq, XML, Elem, Node}
-import tools.nsc.io.{Path, File, Directory}
-import java.io._
+import tools.nsc.io.{Path, File}
 import java.nio.charset.Charset
 import java.text.SimpleDateFormat
-import java.util.{ArrayList, Calendar}
+import java.util.Calendar
 
 import org.apache.http.impl.client.DefaultHttpClient
 import org.apache.http.client.methods.HttpPost
@@ -14,9 +11,7 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 
-import com.drew.metadata._
 import com.drew.metadata.exif._
-import com.drew.metadata.iptc._
 import com.drew.imaging._
 
 object Album2Tumblr {
